@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #E8D7E1; /* Soft Lavender background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #5C4D8A; /* Deep Purple text color */
+            position: relative; /* Relative positioning for buttons */
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            width: 400px; /* Wider container */
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #5C4D8A; /* Deep Purple heading */
+            transition: opacity 0.5s ease; /* Smooth transition for opacity */
+            opacity: 1;
+        }
+        .hidden {
+            display: none;
+        }
+        .fade-out {
+            opacity: 0; /* Hidden state */
+        }
+        input {
+            width: calc(100% - 30px); /* Reduced width to center inputs */
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.3); /* Slightly transparent */
+            color: #5C4D8A; /* Deep Purple for input text */
+            transition: background-color 0.3s;
+        }
+        input::placeholder {
+            color: rgba(92, 77, 138, 0.7); /* Placeholder color */
+        }
+        button {
+            background-color: #5C4D8A; /* Deep Purple */
+            color: white;
+            border: none;
+            padding: 10px 20px; /* Adjusted padding for better button size */
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: 10px; /* Space between buttons */
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #4A3B6A; /* Darker shade on hover */
+        }
+        .toggle-buttons {
+            position: absolute; /* Absolute positioning */
+            top: 20px; /* Space from the top */
+            right: 20px; /* Space from the right */
+            display: flex; /* Flexbox for side-by-side layout */
+        }
+        .transition {
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+        .header img {
+            height: 50px; /* Adjust size as needed */
+            cursor: pointer;
+        }
+    </style>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDyws9f_eXgl7oWC-XzQ4MfrwdAn-3yxk8",
+            authDomain: "chats-86d83.firebaseapp.com",
+            projectId: "chats-86d83",
+            storageBucket: "chats-86d83.appspot.com",
+            messagingSenderId: "1061614868091",
+            appId: "1:1061614868091:web:148604adf04279d809b4de"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.saveInput = async function() {
+            const inputValue = document.getElementById("signupInputField").value.trim();
+            const passwordValue = document.getElementById("signupPasswordField").value.trim();
+            const docName = inputValue;
+
+            if (!docName) {
+                alert("Please enter a username.");
+                return;
+            }
+
+            const docRef = doc(db, "Logins", docName);
+            const docSnap = await getDoc(docRef);
+
+            if (!docSnap.exists()) {
+                try {
+                    await setDoc(docRef, {
+                        username: inputValue,
+                        password: passwordValue,
+                    });
+                    alert("Input saved!");
+                    // Redirect to portfolio page after signup
+                    window.location.href = `portfolio.html?username=${encodeURIComponent(inputValue)}`;
+                } catch (error) {
+                    console.error("Error adding document: ", error);
+                }
+            } else {
+                alert("Username already exists!");
+            }
+        };
+
+        window.getDocument = async function() {
+            const docName = document.getElementById("inputField").value.trim();
+
+            if (!docName) {
+                alert("Please enter a username to retrieve.");
+                return;
+            }
+
+            const docRef = doc(db, "Logins", docName);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                const inputPassword = document.getElementById("passwordField").value.trim();
+
+                if (data.password === inputPassword) {
+                    // Redirect to portfolio page after login
+                    window.location.href = `portfolio.html?username=${encodeURIComponent(docName)}`;
+                } else {
+                    alert("Incorrect password!");
+                }
+            } else {
+                alert("No such document!");
+            }
+        };
+
+        window.displayUsernames = async function() {
+            const loginsCollection = collection(db, "Logins");
+            const querySnapshot = await getDocs(loginsCollection);
+
+            const usernames = [];
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                if (data.username) {
+                    usernames.push(data.username);
+                }
+            });
+
+            console.log("Usernames List:", usernames);
+        };
+
+        window.switchToLogin = function() {
+            const heading = document.querySelector("h2");
+            heading.classList.add("fade-out");
+            setTimeout(() => {
+                heading.textContent = "Login"; // Change heading to Login
+                heading.classList.remove("fade-out");
+            }, 500);
+
+            document.getElementById("signupSection").classList.remove("visible");
+            document.getElementById("signupSection").classList.add("transition");
+            setTimeout(() => {
+                document.getElementById("signupSection").classList.add("hidden");
+                document.getElementById("loginSection").classList.remove("hidden");
+                document.getElementById("loginSection").classList.add("visible");
+                document.title = "Login Page"; // Change title to Login
+            }, 500);
+        };
+
+        window.switchToSignup = function() {
+            const heading = document.querySelector("h2");
+            heading.classList.add("fade-out");
+            setTimeout(() => {
+                heading.textContent = "Sign Up"; // Change heading to Sign Up
+                heading.classList.remove("fade-out");
+            }, 500);
+
+            document.getElementById("loginSection").classList.remove("visible");
+            document.getElementById("loginSection").classList.add("transition");
+            setTimeout(() => {
+                document.getElementById("loginSection").classList.add("hidden");
+                document.getElementById("signupSection").classList.remove("hidden");
+                document.getElementById("signupSection").classList.add("visible");
+                document.title = "Sign Up Page"; // Change title to Sign Up
+            }, 500);
+        };
+
+        window.onload = function() {
+            displayUsernames();
+            switchToLogin(); // Default to Login view
+            document.title = "Login Page"; // Set default title
+        };
+    </script>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">
+            <img src="https://cdn.worldvectorlogo.com/logos/rocket-chat.svg" alt="Rocket.Chat Logo">
+        </a>
+    </div>
+    <div class="toggle-buttons">
+        <button onclick="switchToLogin()">Login</button>
+        <button onclick="switchToSignup()">Sign Up</button>
+    </div>
+    <div class="container">
+        <h2>Login</h2>
+        
+        <div id="loginSection" class="visible">
+            <input type="text" id="inputField" placeholder="Enter username..." required>
+            <input type="password" id="passwordField" placeholder="Enter password..." required>
+            <button onclick="getDocument()">Login</button>
+        </div>
+
+        <div id="signupSection" class="hidden transition">
+            <input type="text" id="signupInputField" placeholder="Create username..." required>
+            <input type="password" id="signupPasswordField" placeholder="Create password..." required>
+            <button onclick="saveInput()">Sign Up</button>
+        </div>
+    </div>
+</body>
+</html>
