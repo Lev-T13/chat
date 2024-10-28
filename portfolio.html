@@ -5,221 +5,303 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Portfolio</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #E8D7E1; /* Soft Lavender background */
-            color: #5C4D8A; /* Deep Purple text color */
-            margin: 0;
-            display: flex; /* Flexbox for layout */
-            flex-direction: row; /* Row layout for sidebar and content */
-            height: 100vh; /* Full viewport height */
-            transition: background-color 0.3s, color 0.3s; /* Smooth transition */
-        }
-        .dark-mode {
-            background-color: #333; /* Dark background */
-            color: #E8D7E1; /* Light text color */
-        }
-        .sidebar {
-            width: 250px; /* Width of sidebar */
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            display: flex;
-            flex-direction: column; /* Vertical layout */
-            justify-content: flex-start; /* Align items to the top */
-            transition: width 0.3s; /* Smooth transition for resizing */
-        }
-        .dark-mode .sidebar {
-            background-color: rgba(0, 0, 0, 0.7); /* Dark sidebar */
-        }
-        .sidebar.minimized {
-            width: 60px; /* Minimized width */
-        }
-        .logo {
-            display: flex;
-            justify-content: center; /* Center logo */
-            margin-bottom: 20px; /* Space below logo */
-        }
-        .logo img {
-            height: 40px; /* Size of the logo */
-            cursor: pointer;
-        }
-        .username1 {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px; /* Space below username */
-            display: flex;
-            justify-content: center;
-            align-items: center; /* Center align items */
-        }
-        .username.hidden {
-            display: none; /* Hide username text when minimized */
-        }
-        .profile-pic {
-            width: 40px; /* Default PFP size */
-            height: 40px; /* Default PFP size */
-            border-radius: 50%; /* Circle shape */
-            margin-right: 10px; /* Space between PFP and username */
-        }
-        .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border-radius: 10px;
-            margin: 5px 0;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .menu-item:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-        .dark-mode .menu-item:hover {
-            background-color: rgba(255, 255, 255, 0.3); /* Dark mode hover */
-        }
-        .menu-item img {
-            width: 24px; /* Icon size */
-            height: 24px; /* Icon size */
-            margin-right: 10px; /* Space between icon and text */
-        }
-        .menu-item.minimized img {
-            margin-right: 0; /* Remove margin in minimized state */
-        }
-        .content {
-            flex: 1; /* Take remaining space */
-            padding: 20px;
-            display: none; /* Initially hidden */
-            overflow-y: auto; /* Scroll if content is long */
-        }
-        .portfolio-content,
-        .settings-content {
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            max-width: 1000px;
-            margin: auto;
-            text-align: center;
-        }
-        h2 {
-            margin-bottom: 20px;
-        }
-        .settings-content {
-            display: flex;
-            flex-direction: column;
-            gap: 30px; /* Increased space between items */
-        }
-        .setting-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* Space between label and toggle */
-            padding: 15px;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            transition: background-color 0.3s;
-        }
-        .setting-item:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-        }
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-        }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        input:checked + .slider {
-            background-color: #2196F3;
-        }
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-        img {
-            width: 24px; /* Set icon size */
-            height: 24px; /* Set icon size */
-        }
-        .profile-pic-input {
-            width: 80%; /* Input width */
-            padding: 10px; /* Input padding */
-            border-radius: 5px; /* Rounded corners */
-            border: 1px solid #ccc; /* Border style */
-        }
-        .button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .button.save {
-            background-color: #4CAF50; /* Green */
-            color: white;
-        }
-        .button.save:hover {
-            background-color: #45a049; /* Darker green */
-        }
-        .button.delete {
-            background-color: #f44336; /* Red */
-            color: white;
-        }
-        .button.delete:hover {
-            background-color: #e53935; /* Darker red */
-        }
-        .toggle-button {
-            cursor: pointer;
-            background-color: transparent;
-            border: none;
-            padding: 10px;
-            margin-bottom: 10px; /* Space below toggle */
-        }
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F5E5D6; /* Soft Cream background */
+    color: #5B3A29; /* Rich Brown text color */
+    margin: 0;
+    display: flex; /* Flexbox for layout */
+    flex-direction: row; /* Row layout for sidebar and content */
+    height: 100vh; /* Full viewport height */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+    text-shadow: 0 0 10px #b39a8b; /* Subtle text shadow */
+}
+.dark-mode {
+    background-color: #333; /* Dark background */
+    color: #E8D7E1; /* Light text color */
+    text-shadow: 0 0 10px #ccc;
+}
+.dark-mode .portfolio-content div {
+    background-color: #5B3A29; /* Rich Brown */
+}
+.sidebar {
+    width: 15%; /* Width of sidebar */
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column; /* Vertical layout */
+    justify-content: flex-start; /* Align items to the top */
+    transition: width 0.3s; /* Smooth transition for resizing */
+}
+.dark-mode .sidebar {
+    background-color: rgba(0, 0, 0, 0.7); /* Dark sidebar */
+}
+.sidebar.minimized {
+    width: 60px; /* Minimized width */
+}
+.logo {
+    display: flex;
+    justify-content: center; /* Center logo */
+    margin-bottom: 20px; /* Space below logo */
+}
+.logo img {
+    height: 40px; /* Size of the logo */
+    cursor: pointer;
+}
+.username1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px; /* Space below username */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center align items */
+}
+.username.hidden {
+    display: none; /* Hide username text when minimized */
+}
+.profile-pic {
+    width: 40px; /* Default PFP size */
+    height: 40px; /* Default PFP size */
+    border-radius: 50%; /* Circle shape */
+    margin-right: 10px; /* Space between PFP and username */
+}
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+.dark-mode .menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.3); /* Dark mode hover */
+}
+.menu-item img {
+    width: 24px; /* Icon size */
+    height: 24px; /* Icon size */
+    margin-right: 10px; /* Space between icon and text */
+}
+.menu-item.minimized img {
+    margin-right: 0; /* Remove margin in minimized state */
+}
+.content {
+    flex: 1; /* Take remaining space */
+    padding: 20px;
+    display: none; /* Initially hidden */
+    overflow-y: auto; /* Scroll if content is long */
+}
+.portfolio-content,
+.settings-content {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    max-width: 90%;
+    margin: auto;
+    text-align: center;
+}
+h2 {
+    margin-bottom: 20px;
+}
+.settings-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Increased space between items */
+}
+.setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space between label and toggle */
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+.setting-item:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #b39a8b; /* Soft brown */
+    transition: .4s;
+    border-radius: 34px;
+}
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: #f5e5d6; /* Cream */
+    transition: .4s;
+    border-radius: 50%;
+}
+input:checked + .slider {
+    background-color: #8d5b42; /* Darker brown */
+}
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+img {
+    width: 24px; /* Set icon size */
+    height: 24px; /* Set icon size */
+}
+.profile-pic-input {
+    width: 80%; /* Input width */
+    padding: 10px; /* Input padding */
+    border-radius: 5px; /* Rounded corners */
+    border: 1px solid #b39a8b; /* Border style */
+}
+.button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.button.save {
+    background-color: #7d5c42; /* Brown */
+    color: white;
+}
+.button.save:hover {
+    background-color: #6a4d35; /* Darker brown */
+}
+.button.delete {
+    background-color: #a03c36; /* Reddish brown */
+    color: white;
+}
+.button.delete:hover {
+    background-color: #9b3530; /* Darker reddish brown */
+}
+.toggle-button {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+    margin-bottom: 10px; /* Space below toggle */
+}
 
-        .menu-item span {
-            transition: opacity 0.3s; /* Smooth transition for text opacity */
-        }
+.menu-item span {
+    transition: opacity 0.3s; /* Smooth transition for text opacity */
+}
 
-        .menu-item.minimized span {
-            opacity: 0; /* Hide text in minimized state */
-            visibility: hidden; /* Ensure the text is not clickable */
-        }
+.menu-item.minimized span {
+    opacity: 0; /* Hide text in minimized state */
+    visibility: hidden; /* Ensure the text is not clickable */
+}
 
-        .portfolio-content div{
-            display: flex;
-            text-align: left;
-            align-items: center;
-            max-width: 1000px;
-            height: 50px;
-            padding: 10px;
-            color: #ccc;
-            background-color:#5C4D8A;
-            border-radius: 20px;
-            size: 20px;
-        }
+.portfolio-content div {
+    display: flex;
+    text-align: left;
+    align-items: center;
+    max-width: 1000px;
+    height: 50px;
+    padding: 10px;
+    color: #E8CFC0; /* Light cream brown */
+    background-color: #7d5c42; /* Brown */
+    border-radius: 20px;
+    size: 20px;
+    margin: 10px;
+}
+
+#search-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px; /* Space below search bar */
+}
+
+#search-input {
+    flex: 1; /* Take remaining space */
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #b39a8b;
+    margin-right: 10px; /* Space between input and button */
+}
+
+#search-enter {
+    padding: 10px 15px;
+    background-color: #7d5c42;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-results {
+    margin-top: 10px;
+}
+
+.search-result-item {
+    display: flex;
+    justify-content: space-between; /* Space between username and buttons */
+    align-items: center;
+    padding: 10px;
+    background-color: #e8d7e1; /* Light background */
+    border-radius: 10px;
+    margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100px; /* Adjust sidebar width for smaller screens */
+    }
+    .sidebar.minimized {
+        width: 60px; /* Minimized width for smaller screens */
+    }
+    .content {
+        padding: 10px; /* Reduce padding for content on smaller screens */
+    }
+    .menu-item img {
+        width: 20px; /* Reduce icon size */
+        height: 20px;
+    }
+    .profile-pic {
+        width: 30px; /* Reduce profile picture size */
+        height: 30px;
+    }
+    #search-input {
+        padding: 5px; /* Adjust search input padding */
+    }
+}
+
+/* Tablet Devices */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .sidebar {
+        width: 220px; /* Sidebar width for tablets */
+    }
+    .menu-item img {
+        width: 24px; /* Icon size for tablets */
+        height: 24px;
+    }
+    .profile-pic {
+        width: 35px; /* Profile picture size for tablets */
+        height: 35px;
+    }
+}
+
     </style>
 </head>
 <body>
@@ -235,30 +317,32 @@
             <div class="username" id="usernameTextDiv"><span id="usernameText">Username</span></div>
         </div>
         <div class="menu-item" onclick="showContent('portfolio')">
-            <img src="https://img.icons8.com/ios-filled/50/5C4D8A/chat.png" alt="All Chats" />
+            <img src="https://img.icons8.com/ios-filled/50/8B4513/chat.png" alt="All Chats" />
             <span>All Chats</span>
         </div>
         <div class="menu-item" onclick="showContent('favourites')">
-            <img src="https://img.icons8.com/ios-filled/50/5C4D8A/star.png" alt="Favourites" />
+            <img src="https://img.icons8.com/ios-filled/50/8B4513/star.png" alt="Favourites" />
             <span>Favourites</span>
         </div>
         <div class="menu-item" onclick="showContent('archived')">
-            <img src="https://img.icons8.com/ios-filled/50/5C4D8A/archive.png" alt="Archived" />
+            <img src="https://img.icons8.com/ios-filled/50/8B4513/archive.png" alt="Archived" />
             <span>Archived</span>
         </div>
         <div class="menu-item" style="margin-top: auto;" onclick="showContent('settings')">
-            <img src="https://img.icons8.com/ios-filled/50/5C4D8A/settings.png" alt="Settings" />
+            <img src="https://img.icons8.com/ios-filled/50/8B4513/settings.png" alt="Settings" />
             <span>Settings</span>
         </div>
+        
     </div>
     <div class="content" id="portfolioContent">
         <div id="search-container">
             <input type="text" id="search-input" placeholder="Search Friends..." />
-            <button id="search-enter" onclick="getDocument()">Enter</button>
+            <button id="search-enter" onclick="searchProfile()">Enter</button>
             <div id="results" class="search-results"></div>
         </div>
         <div id="portfolio-content" class="portfolio-content">
             <h2>Your Chats</h2>
+            <p id="noFriends">You have no friends yet.</p>
         </div>
     </div>
     <div class="content" id="favouritesContent">
@@ -354,7 +438,7 @@
         };
 
         window.deleteProfilePic = async function() {
-            const defaultPic = 'https://img.icons8.com/ios-filled/50/5C4D8A/user-circle.png';
+            const defaultPic = 'https://wallpapers.com/images/high/default-profile-picture-finding-the-unfound-tyhvtmi1l0p3wueq.webp';
             const docRef = doc(db, "Logins", username);
             await setDoc(docRef, { profilePic: defaultPic }, { merge: true });
             document.getElementById('profilePic').src = defaultPic;
@@ -442,7 +526,7 @@
             });*/
         };
 
-        window.getDocument = async function() {
+        /*window.getDocument = async function() {
             const search = document.getElementById("search-input").value.trim();
 
             if (!search) {
@@ -467,7 +551,7 @@
             } else {
                 alert("No such user!");
             }
-        };
+        };*/
         
         window.searchProfile = async function() {
             const search = document.getElementById("search-input").value.trim();
@@ -485,19 +569,13 @@
                 console.log(data.username)
 
                 if (confirm("Make " + data.username + " your friend?")) {
-                    alert("Successful")
-                    const para = document.createElement("div");
-                    para.setAttribute('onclick', "alert('clicked')");
-                    const node = document.createTextNode(search);
-                    para.appendChild(node);
-                    const element = document.getElementById("portfolio-content");
-                    element.appendChild(para);
-
                     allFriends.push(search);
                     console.log(allFriends);
 
                     const docRef = doc(db, "Logins", username);
                     await setDoc(docRef, { friends: allFriends }, { merge: true });
+
+                    location.reload();
                 } else {
                     alert("Cancelled")
                 }
@@ -505,6 +583,9 @@
         };
 
         window.createFriend = async function(friend) {
+            if (document.getElementById("noFriends")){
+                document.getElementById("noFriends").remove()
+            };
             const para = document.createElement("div");
             para.setAttribute('onclick', "openNewWindow(event)");
             const node = document.createTextNode(friend);
@@ -515,7 +596,7 @@
 
         window.openNewWindow = async function(event) {
             const clickedElement = event.target;
-            alert(`You clicked on: ${clickedElement.tagName} with text: "${clickedElement.textContent}"`);
+            //*alert(`You clicked on: ${clickedElement.tagName} with text: "${clickedElement.textContent}"`);
             var myVariable = clickedElement.textContent
             const url = `chats.html?user=${encodeURIComponent(myVariable)}&username=${encodeURIComponent(username)}`;
             window.open(url, '_blank');
