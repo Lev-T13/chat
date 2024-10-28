@@ -11,9 +11,12 @@
             display: flex;
             height: 100vh;
             margin: 0;
-            color: white; /* Deep Purple text color */
             position: relative; /* Relative positioning for buttons */
             justify-content: center;
+            color: #fff;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            text-shadow: 0 0 10px #ccc;
         }
 
         #chat-container {
@@ -28,7 +31,7 @@
         }
 
         #user-info {
-            color: #bbb; /* Light color for better readability */
+            color:#fff; /* Light color for better readability */
             margin: 10px; /* Margin for spacing */
             font-size: 14px; /* Adjust font size */
             text-align: center; /* Center the text */
@@ -40,14 +43,14 @@
 
         .username {
             font-weight: bold; /* Make the username bold */
-            color: #bbb; /* Light color for the username */
+            color: #fff; /* Light color for the username */
         }
 
         .message {
             margin: 5px 0; /* Space between username and message */
             padding: 10px;
             border-radius: 15px;
-            background-color: #5C4D8A; /* Purple background */
+            background-color: #8d5b42; /* Darker brown */
             max-width: 60%; /* Limit width */
         }
 
@@ -69,7 +72,7 @@
             max-width: 1000px;
             height: 20px;
             border-radius: 20px;
-            background-color: #5C4D8A;
+            background-color: #b39a8b; /* Soft brown */
             color: white;
             position: fixed;
             bottom: 40px; /* Distance from the bottom */
@@ -78,21 +81,21 @@
         input {
             width: 100%;
             padding: 12px 16px;
-            border: 1px solid #b700ff91; /* Light gray border */
+            border: 1px solid #8d5b42; /* Darker brown */
             border-radius: 24px; /* Rounded corners */
-            box-shadow: 4px 4px 4px rgba(136, 0, 255, 0.591); /* Subtle shadow */
+            box-shadow: 0px 0px 16px #8d5b42; /* Darker brown */ /* Subtle shadow */
             font-size: 16px;
             outline: none; /* Remove outline */
-            transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transition */
+            transition: border-color 0.3s, box-shadow 0.5s; /* Smooth transition */
         }
 
         input:focus {
             border-color: rgba(0, 0, 0, 0.2); /* Change border color on focus */
-            box-shadow: 0 0 8px rgba(0, 123, 255, 0.3); /* Highlight effect */
+            box-shadow: 0 0 16px rgba(0, 123, 255, 0.3); /* Highlight effect */
         }
 
         input::placeholder {
-            color: #aaa; /* Placeholder color */
+            color: #fff /* Placeholder color */
         }
     </style>
 
@@ -233,5 +236,3 @@ loadChatData();
 
 </body>
 </html>
-
-
